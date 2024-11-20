@@ -70,8 +70,9 @@ class AuthCAS extends AuthPluginBase
         ),
         'casMailAttr' => array(
             'type' => 'string',
-            'label' => 'CAS attribute for mail',
-            'default' => 'mail'
+            'label' => 'CAS attribute for mail (or @domain))',
+            'default' => 'mail',
+            'help' => 'If your CAS server doesn\'t return an email address attribute, specify the @domain, and it will be combined with the username.'
         ),
         'server' => array(
             'type' => 'string',
