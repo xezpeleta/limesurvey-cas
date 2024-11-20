@@ -435,8 +435,20 @@ class AuthCAS extends AuthPluginBase
                     // disable SSL validation of the CAS server
                     //phpCAS::setNoCasServerValidation();
                     $cas_fullname = phpCAS::getAttribute($this->get('casFullnameAttr'));
+
                     $cas_login = phpCAS::getAttribute($this->get('casLoginAttr'));
+                    if (empty($cas_login)) {
+                        $cas_login = phpCAS::getUser();
+                    }
+
                     $cas_mail = phpCAS::getAttribute($this->get('casMailAttr'));
+                    if (empty($cas_mail)) {
+                        // If attribute is empty, check if casMailAttr contains a @domain
+                        if (strpos($this->get('casMailAttr'), '@') == 0) {
+                            $cas_domain = $this->get('casMailAttr');
+                            $cas_mail = $cas_login . $cas_domain;
+                        }
+                    }
                 } catch (Exception $e)
                 {
                     $this->setAuthFailure(self::ERROR_USERNAME_INVALID);
